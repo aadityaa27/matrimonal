@@ -1,0 +1,8 @@
+{
+  "name": "Matrimonial Web App",
+  "description": "A streamlined matrimonial platform featuring a landing page, basic registration, candidate login, and a real SQLite database supporting up to 10 image uploads for Playwright test automation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
