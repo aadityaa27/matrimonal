@@ -1,211 +1,240 @@
 import React from 'react';
-import { 
-  Heart, 
-  Sparkles, 
-  ShieldCheck, 
-  Camera, 
-  Lock, 
-  ArrowRight, 
-  UserCheck, 
-  Users, 
-  CheckCircle2,
-  Database
-} from 'lucide-react';
+import { Heart, Search, ShieldCheck, Users, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { CandidateProfile } from '../types';
 
 interface LandingPageProps {
-  onNavigate: (page: 'landing' | 'register' | 'login' | 'profile' | 'browse') => void;
-  isLoggedIn: boolean;
-  activeUserName?: string;
+  onExploreClick: () => void;
+  onRegisterClick: () => void;
+  onLoginClick: () => void;
+  featuredProfiles: CandidateProfile[];
+  onSelectProfile: (profile: CandidateProfile) => void;
+  onQuickDemoLogin: () => void;
+  onQuickAdminLogin: () => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
-  onNavigate,
-  isLoggedIn,
-  activeUserName,
+  onExploreClick,
+  onRegisterClick,
+  onLoginClick,
+  featuredProfiles,
+  onSelectProfile,
+  onQuickDemoLogin,
+  onQuickAdminLogin,
 }) => {
   return (
-    <div id="landing-page" data-testid="landing-page" className="space-y-16 pb-12">
-      
+    <div className="space-y-16 pb-16">
       {/* Hero Section */}
-      <section 
-        id="landing-hero-section"
-        data-testid="landing-hero-section"
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 via-pink-600 to-rose-700 text-white p-8 sm:p-14 shadow-lg"
-      >
-        {/* Background ambient accents */}
-        <div className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-        <div className="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-amber-400/20 blur-2xl pointer-events-none" />
+      <section className="relative overflow-hidden bg-gradient-to-b from-rose-50/70 via-amber-50/30 to-white pt-12 pb-20 border-b border-rose-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100/80 text-rose-800 text-xs font-semibold tracking-wide">
+                <Sparkles className="w-3.5 h-3.5 text-rose-600" />
+                <span>India's Trusted Matchmaking Community</span>
+              </div>
 
-        <div className="relative max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-white border border-white/30">
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>Trusted Matrimony &amp; Automated Testing Sandbox</span>
-          </div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-gray-950 tracking-tight leading-[1.15]">
+                Where Meaningful <br />
+                <span className="text-rose-600 underline decoration-amber-300 decoration-wavy decoration-2">
+                  Lifelong Bonds
+                </span>{' '}
+                Begin.
+              </h1>
 
-          <h1 
-            id="hero-title"
-            data-testid="hero-title"
-            className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight text-white"
-          >
-            Find Your Soulmate with Genuine Profiles &amp; Photo Albums
-          </h1>
+              <p className="text-lg text-gray-600 max-w-2xl leading-relaxed">
+                Connect with genuine, verified Indian brides and grooms. Designed for families and modern professionals
+                seeking authentic life partners rooted in shared traditions and values.
+              </p>
 
-          <p 
-            id="hero-subtitle"
-            data-testid="hero-subtitle"
-            className="text-sm sm:text-base text-rose-100 leading-relaxed max-w-2xl"
-          >
-            Connect with verified prospective brides and grooms. Create your profile with basic details, upload up to 10 photos stored securely in your database, and explore matches.
-          </p>
-
-          {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            {!isLoggedIn ? (
-              <>
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
                 <button
                   id="hero-register-btn"
                   data-testid="hero-register-btn"
-                  onClick={() => onNavigate('register')}
-                  className="px-6 py-3 rounded-xl bg-white text-rose-700 hover:bg-rose-50 font-bold text-sm shadow-md transition-all flex items-center gap-2"
+                  type="button"
+                  onClick={onRegisterClick}
+                  className="px-6 py-3.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-base shadow-lg shadow-rose-200 transition-all hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2"
                 >
-                  <span>Register Free (Upload 10 Photos)</span>
+                  Create Free Profile
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button
-                  id="hero-login-btn"
-                  data-testid="hero-login-btn"
-                  onClick={() => onNavigate('login')}
-                  className="px-5 py-3 rounded-xl bg-black/25 hover:bg-black/35 text-white font-semibold text-sm border border-white/30 backdrop-blur-xs transition-colors flex items-center gap-1.5"
+                  id="hero-explore-btn"
+                  data-testid="hero-explore-btn"
+                  type="button"
+                  onClick={onExploreClick}
+                  className="px-6 py-3.5 rounded-xl bg-white hover:bg-gray-50 text-gray-800 font-semibold text-base border border-gray-300 shadow-xs transition-all hover:border-gray-400 flex items-center gap-2"
                 >
-                  <span>Candidate Login</span>
+                  <Search className="w-4 h-4 text-rose-600" />
+                  Browse Profiles
                 </button>
-              </>
-            ) : (
-              <button
-                id="hero-profile-btn"
-                data-testid="hero-profile-btn"
-                onClick={() => onNavigate('profile')}
-                className="px-6 py-3 rounded-xl bg-white text-rose-700 hover:bg-rose-50 font-bold text-sm shadow-md transition-all flex items-center gap-2"
-              >
-                <span>Welcome, {activeUserName}! Go to My Profile</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            )}
+              </div>
 
-            <button
-              id="hero-explore-btn"
-              data-testid="hero-explore-btn"
-              onClick={() => onNavigate('browse')}
-              className="px-5 py-3 rounded-xl bg-rose-500/40 hover:bg-rose-500/60 text-white font-medium text-sm transition-colors flex items-center gap-1.5"
-            >
-              <Users className="w-4 h-4" />
-              <span>Browse Profiles</span>
-            </button>
-          </div>
+              {/* QA & Demo Quick Access Banner */}
+              <div className="p-4 rounded-xl bg-amber-50/80 border border-amber-200/70 text-left max-w-xl">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+                    <span className="text-xs font-bold text-amber-900 uppercase tracking-wider">QA Demo Sandbox</span>
+                  </div>
+                  <span className="text-[11px] text-amber-700 font-medium">1-Click Auto Login</span>
+                </div>
+                <div className="flex flex-wrap gap-2.5 mt-2.5">
+                  <button
+                    id="quick-demo-login-btn"
+                    data-testid="quick-demo-login-btn"
+                    type="button"
+                    onClick={onQuickDemoLogin}
+                    className="px-3 py-1.5 rounded-lg bg-white hover:bg-amber-100 text-xs font-semibold text-amber-900 border border-amber-300 shadow-2xs transition-colors"
+                  >
+                    Login as Demo User (Rohan Sharma)
+                  </button>
+                  <button
+                    id="quick-admin-login-btn"
+                    data-testid="quick-admin-login-btn"
+                    type="button"
+                    onClick={onQuickAdminLogin}
+                    className="px-3 py-1.5 rounded-lg bg-white hover:bg-purple-100 text-xs font-semibold text-purple-900 border border-purple-300 shadow-2xs transition-colors"
+                  >
+                    Login as Admin
+                  </button>
+                </div>
+              </div>
+            </div>
 
-          {/* Quick Metrics */}
-          <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/20 text-xs">
-            <div>
-              <strong className="block text-lg font-bold text-white">10 Photos</strong>
-              <span className="text-rose-200">Database Storage</span>
+            {/* Hero Visual Collage */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative mx-auto max-w-sm rounded-3xl bg-white p-4 shadow-2xl ring-1 ring-black/5">
+                <div className="relative overflow-hidden rounded-2xl aspect-4/5">
+                  <img
+                    src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop&q=80"
+                    alt="Traditional Indian Wedding"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-600/90 text-[11px] font-semibold mb-1">
+                      <Heart className="w-3 h-3 fill-white" />
+                      100% Verified Profiles
+                    </div>
+                    <p className="text-lg font-serif font-bold">Celebrating 5,000+ Happy Unions</p>
+                    <p className="text-xs text-rose-100 mt-0.5">Across Madhya Pradesh, Delhi NCR, and nationwide</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              <strong className="block text-lg font-bold text-white">100%</strong>
-              <span className="text-rose-200">Verified Candidates</span>
-            </div>
-            <div>
-              <strong className="block text-lg font-bold text-white">End-to-End</strong>
-              <span className="text-rose-200">Playwright Test Ready</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3 Step Workflow */}
-      <section className="space-y-6">
-        <div className="text-center max-w-xl mx-auto space-y-2">
-          <h2 className="text-2xl font-bold text-gray-900">How Milan Matrimony Works</h2>
-          <p className="text-xs sm:text-sm text-gray-500">
-            Simple, transparent steps to create your candidate profile and upload album photos
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Step 1 */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-xs space-y-3 relative">
-            <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
-              1
-            </div>
-            <h3 className="text-base font-bold text-gray-900">Register with Basic Details</h3>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Fill in your full name, email, password, gender, date of birth, city, and a warm about-me bio.
-            </p>
-          </div>
-
-          {/* Step 2 */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-xs space-y-3 relative">
-            <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
-              2
-            </div>
-            <h3 className="text-base font-bold text-gray-900">Upload Up to 10 Photos</h3>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Attach multiple portrait and lifestyle photos. All 10 images are stored locally in the browser database.
-            </p>
-          </div>
-
-          {/* Step 3 */}
-          <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-xs space-y-3 relative">
-            <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
-              3
-            </div>
-            <h3 className="text-base font-bold text-gray-900">Login &amp; View User Profile</h3>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Login anytime using your registered email and password to view your profile album and manage details.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Feature Highlights Card */}
-      <section className="bg-gray-50 border border-gray-200 p-8 rounded-3xl space-y-6">
-        <div className="flex items-center gap-3">
-          <Database className="w-6 h-6 text-rose-600" />
+      {/* Featured Profiles Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <h3 className="text-lg font-bold text-gray-900">Database-backed 10 Photo Uploads</h3>
-            <p className="text-xs text-gray-500">
-              Integrated IndexedDB database engine allows testing heavy file uploads, drag &amp; drop, and photo gallery management.
-            </p>
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-rose-600 mb-1">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Handpicked Candidates</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-gray-950">Featured Profiles Today</h2>
+            <p className="text-sm text-gray-600 mt-1">Discover educated and ambitious professionals looking for companionship</p>
           </div>
+          <button
+            id="view-all-profiles-btn"
+            data-testid="view-all-profiles-btn"
+            type="button"
+            onClick={onExploreClick}
+            className="inline-flex items-center gap-1 text-sm font-semibold text-rose-600 hover:text-rose-700 transition-colors"
+          >
+            Explore all 20+ profiles <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-          <div className="p-4 bg-white rounded-2xl border border-gray-200 space-y-1">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <strong className="block text-gray-900">Multi-File Upload</strong>
-            <span className="text-gray-500">Select multiple files simultaneously</span>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredProfiles.slice(0, 4).map((p) => (
+            <div
+              key={p.id}
+              id={`featured-profile-${p.id}`}
+              data-testid={`featured-profile-${p.id}`}
+              onClick={() => onSelectProfile(p)}
+              className="group cursor-pointer rounded-2xl bg-white border border-gray-200/80 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+            >
+              <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
+                <img
+                  src={p.photo_url || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'}
+                  alt={p.full_name}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/90 backdrop-blur-xs text-gray-800 capitalize shadow-xs">
+                  {p.gender === 'female' ? 'Bride' : 'Groom'}
+                </span>
+                <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded-md text-[11px] font-medium bg-gray-950/70 text-white backdrop-blur-xs">
+                  {p.city}
+                </span>
+              </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-gray-200 space-y-1">
-            <Camera className="w-4 h-4 text-rose-600" />
-            <strong className="block text-gray-900">Primary Avatar</strong>
-            <span className="text-gray-500">Choose which photo is the primary display</span>
-          </div>
+              <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                <div>
+                  <h3 className="text-base font-bold text-gray-900 group-hover:text-rose-600 transition-colors">
+                    {p.full_name}, {p.age || 26}
+                  </h3>
+                  <p className="text-xs text-gray-600 line-clamp-1 mt-0.5">{p.occupation || 'Professional'}</p>
+                  <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{p.education || 'Graduate'}</p>
+                </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-gray-200 space-y-1">
-            <ShieldCheck className="w-4 h-4 text-purple-600" />
-            <strong className="block text-gray-900">Deterministic Testids</strong>
-            <span className="text-gray-500">Every input and button has a Playwright testid</span>
-          </div>
-
-          <div className="p-4 bg-white rounded-2xl border border-gray-200 space-y-1">
-            <Lock className="w-4 h-4 text-amber-600" />
-            <strong className="block text-gray-900">Local DB Persistence</strong>
-            <span className="text-gray-500">Survives page reloads &amp; test steps</span>
-          </div>
+                <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <span className="font-semibold text-rose-600">View Full Profile</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-rose-500 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
+      {/* Trust & Safety Highlights */}
+      <section className="bg-rose-50/50 border-y border-rose-100 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-2xl font-serif font-bold text-gray-900">Why Families Trust Bandhan</h2>
+            <p className="text-sm text-gray-600 mt-1">Built with high privacy standards and authentic verification workflows</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-2xs space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-gray-900">100% Screened Profiles</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Every candidate is authenticated with contact validation and basic background checks to prevent bots and impersonation.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-2xs space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
+                <Users className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-gray-900">Mutual Interest Messaging</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Connect respectfully. Express interest and converse once your prospective match accepts your invitation.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white border border-rose-100 shadow-2xs space-y-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-bold text-gray-900">Privacy First Architecture</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                You control who sees your photos, direct contact details, and family preferences at every stage.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

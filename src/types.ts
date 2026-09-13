@@ -1,116 +1,100 @@
 export type Gender = 'all' | 'male' | 'female' | 'other';
 
-export interface PartnerPreference {
-  ageRange: [number, number];
-  heightRange?: string;
-  religion: string[];
-  education: string[];
-  location?: string;
+export interface User {
+  id: number;
+  email: string;
+  role: 'user' | 'admin';
 }
 
-export interface Profile {
-  id: string;
-  name: string;
+export interface CandidateProfile {
+  id: number;
+  user_id: number;
+  full_name: string;
   gender: 'male' | 'female' | 'other';
-  age: number;
-  dob: string;
-  height: string;
-  religion: string;
-  motherTongue: string;
-  community: string;
-  horoscope?: string;
-  maritalStatus: 'Never Married' | 'Divorced' | 'Widowed' | 'Awaiting Divorce';
-  education: string;
-  occupation: string;
-  company: string;
-  annualIncome: string;
+  date_of_birth: string;
+  age?: number;
   city: string;
   state: string;
-  country: string;
-  photoUrl: string;
-  bio: string;
-  hobbies: string[];
-  verified: boolean;
-  isShortlisted: boolean;
-  interestStatus: 'none' | 'pending' | 'accepted' | 'declined';
-  phone: string;
-  email: string;
-  joinedDate: string;
-  viewsCount?: number;
-  privacyPhone?: 'public' | 'matches_only' | 'hidden';
-  preferences: PartnerPreference;
-}
-
-export interface InterestRequest {
-  id: string;
-  senderProfileId: string;
-  senderName: string;
-  senderAge: number;
-  senderOccupation: string;
-  senderCity: string;
-  senderPhoto: string;
-  message: string;
-  sentDate: string;
-  status: 'pending' | 'accepted' | 'declined';
-}
-
-export interface FilterState {
-  search: string;
-  gender: Gender;
-  religion: string;
-  motherTongue: string;
-  maritalStatus: string;
-  minAge: number;
-  maxAge: number;
-  verifiedOnly: boolean;
-  sortBy: 'relevance' | 'newest' | 'age-asc' | 'age-desc' | 'name-asc';
-  viewMode: 'grid' | 'table';
-}
-
-export interface RegistrationFormData {
-  fullName: string;
-  gender: 'male' | 'female' | 'other';
-  email: string;
-  phone: string;
-  password: string;
-  confirmPassword: string;
-  dob: string;
-  height: string;
-  religion: string;
-  motherTongue: string;
-  maritalStatus: string;
-  education: string;
-  occupation: string;
-  annualIncome: string;
-  city: string;
-  state: string;
-  country: string;
-  bio: string;
-  agreeToTerms: boolean;
-}
-
-export interface UploadedPhoto {
-  id: string;
-  url: string;
-  name: string;
-  isPrimary: boolean;
-  uploadedAt: string;
-}
-
-export interface UserAccount {
-  id: string;
-  fullName: string;
-  email: string;
-  password?: string;
-  gender: 'male' | 'female' | 'other';
-  dob: string;
-  age: number;
-  city: string;
-  bio: string;
-  phone?: string;
   occupation?: string;
-  photos: UploadedPhoto[];
-  joinedDate: string;
+  education?: string;
+  height?: string;
+  religion?: string;
+  annual_income?: string;
+  about?: string;
+  photo_url?: string;
+  interestStatus?: 'none' | 'pending' | 'accepted' | 'rejected';
+  interestDirection?: 'sent' | 'received';
+  interestId?: number;
+  isSelf?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface InterestItem {
+  id: number;
+  sender_id: number;
+  receiver_id: number;
+  status: 'pending' | 'accepted' | 'rejected';
+  full_name: string;
+  gender?: string;
+  date_of_birth?: string;
+  age?: number;
+  city: string;
+  occupation?: string;
+  photo_url?: string;
+  education?: string;
+  created_at: string;
+}
+
+export interface MessageItem {
+  id: number;
+  sender_id: number;
+  receiver_id: number;
+  message: string;
+  created_at: string;
+  sender_name?: string;
+  sender_photo?: string;
+}
+
+export interface ConversationItem {
+  partnerId: number;
+  name: string;
+  photo_url?: string;
+  city?: string;
+  occupation?: string;
+  lastMessage?: string | null;
+  lastMessageTime?: string | null;
+  interestStatus?: string;
+}
+
+export interface AdminStats {
+  totalUsers: number;
+  maleUsers: number;
+  femaleUsers: number;
+  pendingInterests: number;
+  totalMessages: number;
+}
+
+export interface AdminUserItem {
+  id: number;
+  email: string;
+  role: string;
+  created_at: string;
+  full_name?: string;
+  gender?: string;
+  city?: string;
+  occupation?: string;
+  photo_url?: string;
+  age?: number;
+}
+
+export interface SearchFilterState {
+  gender: 'all' | 'female' | 'male';
+  minAge: number | '';
+  maxAge: number | '';
+  city: string;
+  education: string;
+  occupation: string;
 }
 
 export interface ToastNotification {
@@ -119,3 +103,76 @@ export interface ToastNotification {
   message: string;
   duration?: number;
 }
+
+// Backward-compatible type aliases for legacy components
+export type Profile = {
+  id?: number | string;
+  user_id?: number | string;
+  full_name?: string;
+  name?: string;
+  gender?: any;
+  date_of_birth?: string;
+  age?: number;
+  city?: string;
+  state?: string;
+  occupation?: string;
+  education?: string;
+  height?: string;
+  religion?: string;
+  annual_income?: string;
+  about?: string;
+  photo_url?: string;
+  interestStatus?: 'none' | 'pending' | 'accepted' | 'rejected';
+  interestDirection?: 'sent' | 'received';
+  interestId?: number;
+  isSelf?: boolean;
+  created_at?: string;
+  updated_at?: string;
+  [key: string]: any;
+};
+export type FilterState = SearchFilterState & {
+  search?: string;
+  religion?: string;
+  motherTongue?: string;
+  maritalStatus?: string;
+  verifiedOnly?: boolean;
+  sortBy?: string;
+  viewMode?: string;
+};
+export type InterestRequest = {
+  id?: number | string;
+  sender_id?: number | string;
+  receiver_id?: number | string;
+  status?: 'pending' | 'accepted' | 'rejected' | string;
+  full_name?: string;
+  gender?: string;
+  date_of_birth?: string;
+  age?: number;
+  city?: string;
+  occupation?: string;
+  photo_url?: string;
+  education?: string;
+  created_at?: string;
+  [key: string]: any;
+};
+export type RegistrationFormData = Record<string, any>;
+export type UserAccount = {
+  id?: number | string;
+  email?: string;
+  role?: 'user' | 'admin' | string;
+  name?: string;
+  fullName?: string;
+  gender?: string;
+  dob?: string;
+  city?: string;
+  bio?: string;
+  phone?: string;
+  occupation?: string;
+  password?: string;
+  profile?: CandidateProfile;
+  [key: string]: any;
+};
+export type UploadedPhoto = Record<string, any>;
+
+
+

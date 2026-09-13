@@ -1,134 +1,110 @@
 import React, { useState } from 'react';
-import { 
-  LogIn, 
-  Mail, 
-  Lock, 
-  AlertCircle, 
-  Sparkles, 
-  ArrowLeft, 
-  CheckCircle2,
-  KeyRound
-} from 'lucide-react';
-import { authenticateUser } from '../db/matrimonialDb';
-import { UserAccount } from '../types';
+import { Heart, Lock, Mail, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 
 interface LoginPageProps {
-  onLoginSuccess: (user: UserAccount) => void;
-  onNavigateRegister: () => void;
-  onNavigateHome: () => void;
+  onLogin: (email: string, pass: string) => Promise<void>;
+  onSwitchToRegister: () => void;
+  loading: boolean;
+  errorMessage: string | null;
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({
-  onLoginSuccess,
-  onNavigateRegister,
-  onNavigateHome,
+  onLogin,
+  onSwitchToRegister,
+  loading,
+  errorMessage,
 }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [rememberMe, setRememberMe] = useState<boolean>(true);
-  const [errorMsg, setErrorMsg] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [localError, setLocalError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg('');
+    setLocalError(null);
 
-    if (!email.trim()) {
-      setErrorMsg('Please enter your email address');
+    if (!email.trim() || !password.trim()) {
+      setLocalError('Please enter both email and password.');
       return;
     }
 
-    if (!password) {
-      setErrorMsg('Please enter your password');
-      return;
-    }
-
-    setIsSubmitting(true);
     try {
-      const matchedUser = await authenticateUser(email.trim(), password);
-      if (matchedUser) {
-        onLoginSuccess(matchedUser);
-      } else {
-        setErrorMsg('Invalid email or password. You can use demo credentials or register a new account.');
-      }
-    } catch (err) {
-      setErrorMsg('An error occurred during authentication.');
-    } finally {
-      setIsSubmitting(false);
+      await onLogin(email.trim(), password);
+    } catch (err: any) {
+      setLocalError(err.message || 'Login failed. Please check your credentials.');
     }
   };
 
-  const handleFillDemo = () => {
-    setEmail('ananya@example.com');
-    setPassword('Password123!');
-    setErrorMsg('');
+  const handleFillDemoUser = () => {
+    setEmail('demo@bandhan.com');
+    setPassword('Demo@123');
+    setLocalError(null);
   };
+
+  const handleFillDemoAdmin = () => {
+    setEmail('admin@bandhan.com');
+    setPassword('Admin@123');
+    setLocalError(null);
+  };
+
+  const activeError = localError || errorMessage;
 
   return (
-    <div id="login-page" data-testid="login-page" className="max-w-md mx-auto py-8">
-      
-      {/* Back button */}
-      <button
-        id="login-back-home"
-        data-testid="login-back-home"
-        onClick={onNavigateHome}
-        className="mb-4 text-xs font-semibold text-gray-500 hover:text-gray-900 flex items-center gap-1.5 transition-colors"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        <span>Back to Landing Page</span>
-      </button>
-
-      {/* Login Card */}
-      <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
-        
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto shadow-xs">
-            <LogIn className="w-6 h-6" />
+    <div className="max-w-md mx-auto my-12 px-4">
+      <div className="bg-white border border-rose-100 rounded-3xl p-8 shadow-xl shadow-rose-100/40">
+        <div className="text-center space-y-2 mb-6">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-600 to-amber-500 mx-auto flex items-center justify-center text-white shadow-md shadow-rose-200">
+            <Heart className="w-6 h-6 fill-white" />
           </div>
-          <h1 id="login-title" data-testid="login-title" className="text-2xl font-bold text-gray-900">
-            Candidate Login
-          </h1>
-          <p className="text-xs text-gray-500">
-            Sign in to access your matrimonial profile and 10-photo album
-          </p>
+          <h1 className="text-2xl font-serif font-bold text-gray-900">Welcome Back</h1>
+          <p className="text-sm text-gray-500">Sign in to your Bandhan Matrimonial account</p>
         </div>
 
-        {/* Quick Demo Fill Helper */}
-        <div className="p-3 bg-rose-50/70 border border-rose-200/60 rounded-2xl flex items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-rose-800">
-            <KeyRound className="w-4 h-4 text-rose-600 shrink-0" />
-            <span>Practice with demo credentials</span>
+        {/* Quick Credentials Sandbox Filler */}
+        <div className="mb-6 p-3.5 bg-amber-50/90 rounded-2xl border border-amber-200 text-xs text-amber-900 space-y-2">
+          <div className="flex items-center gap-1.5 font-bold">
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <span>QA Demo Credentials</span>
           </div>
-          <button
-            id="login-demo-btn"
-            data-testid="login-demo-btn"
-            type="button"
-            onClick={handleFillDemo}
-            className="px-2.5 py-1 bg-white text-rose-700 font-semibold rounded-lg shadow-xs hover:bg-rose-100 transition-colors shrink-0"
-          >
-            Auto-fill
-          </button>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              id="fill-demo-user-btn"
+              data-testid="quick-login-user"
+              type="button"
+              onClick={handleFillDemoUser}
+              className="px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 font-semibold hover:bg-amber-100/60 transition-colors text-center"
+            >
+              Demo User <br />
+              <span className="text-[10px] font-normal text-amber-700">demo@bandhan.com</span>
+            </button>
+            <button
+              id="fill-demo-admin-btn"
+              data-testid="quick-login-admin"
+              type="button"
+              onClick={handleFillDemoAdmin}
+              className="px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 font-semibold hover:bg-amber-100/60 transition-colors text-center"
+            >
+              Admin <br />
+              <span className="text-[10px] font-normal text-amber-700">admin@bandhan.com</span>
+            </button>
+          </div>
         </div>
 
-        {/* Error Alert */}
-        {errorMsg && (
-          <div 
-            id="login-error-alert" 
-            data-testid="login-error-alert" 
-            role="alert" 
-            className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2"
+        {/* Error Notification */}
+        {activeError && (
+          <div
+            id="login-error-message"
+            data-testid="login-error-message"
+            className="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2"
           >
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-            <span>{errorMsg}</span>
+            <span>{activeError}</span>
           </div>
         )}
 
-        {/* Form */}
-        <form id="login-form" data-testid="login-form" onSubmit={handleSubmit} className="space-y-4">
-          
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="login-email" className="block text-xs font-semibold text-gray-700 mb-1">
-              Email Address *
+              Email Address
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
@@ -140,15 +116,17 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
-                className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="login-password" className="block text-xs font-semibold text-gray-700 mb-1">
-              Password *
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label htmlFor="login-password" className="block text-xs font-semibold text-gray-700">
+                Password
+              </label>
+            </div>
             <div className="relative">
               <Lock className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
               <input
@@ -159,50 +137,37 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-all"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-xs pt-1">
-            <label className="flex items-center gap-2 cursor-pointer text-gray-700">
-              <input
-                id="login-remember"
-                data-testid="login-remember"
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 rounded text-rose-600 focus:ring-rose-500"
-              />
-              <span>Remember me</span>
-            </label>
-          </div>
-
           <button
             id="login-submit-btn"
-            data-testid="login-submit-btn"
+            data-testid="login-submit"
             type="submit"
-            disabled={isSubmitting}
-            className="w-full py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-sm transition-colors flex items-center justify-center gap-2"
+            disabled={loading}
+            className="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm shadow-md shadow-rose-200 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
-            <LogIn className="w-4 h-4" />
-            <span>{isSubmitting ? 'Verifying...' : 'Sign In'}</span>
+            {loading ? 'Authenticating...' : 'Sign In'}
+            <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
-        {/* Link to Registration */}
-        <div className="pt-4 border-t border-gray-100 text-center text-xs text-gray-600">
-          <span>New to Milan Matrimony? </span>
-          <button
-            id="link-to-register"
-            data-testid="link-to-register"
-            onClick={onNavigateRegister}
-            className="font-bold text-rose-600 hover:text-rose-700 underline cursor-pointer"
-          >
-            Register basic details &amp; photos
-          </button>
+        <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+          <p className="text-xs text-gray-600">
+            Don't have a matrimonial profile yet?{' '}
+            <button
+              id="switch-to-register-btn"
+              data-testid="switch-to-register-btn"
+              type="button"
+              onClick={onSwitchToRegister}
+              className="font-bold text-rose-600 hover:underline"
+            >
+              Register Free
+            </button>
+          </p>
         </div>
-
       </div>
     </div>
   );

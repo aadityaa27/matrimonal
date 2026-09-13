@@ -1,6 +1,6 @@
 {
-  "name": "Matrimonial Web App",
-  "description": "A streamlined matrimonial platform featuring a landing page, basic registration, candidate login, and a real SQLite database supporting up to 10 image uploads for Playwright test automation.",
+  "name": "Bandhan Matrimonial",
+  "description": "Find Your Perfect Connection - A full-stack Indian matrimonial demo application for Agentic AI QA and Playwright test automation.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

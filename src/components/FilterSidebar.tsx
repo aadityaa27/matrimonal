@@ -19,6 +19,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onClearFilters,
   totalFiltered,
 }) => {
+  const handleGenderChange = (value: Gender) => {
+    setFilters((prev) => ({ ...prev, gender: value }));
+  };
+
   return (
     <aside 
       id="filter-sidebar" 
@@ -66,22 +70,48 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           Looking for
         </label>
         <div className="grid grid-cols-3 gap-1 bg-gray-100 p-1 rounded-lg" role="group" aria-label="Gender filter">
-          {(['all', 'female', 'male'] as Gender[]).map((genderOption) => (
-            <button
-              key={genderOption}
-              id={`filter-gender-${genderOption}`}
-              data-testid={`filter-gender-${genderOption}`}
-              type="button"
-              onClick={() => setFilters(prev => ({ ...prev, gender: genderOption }))}
-              className={`py-1.5 px-2 text-xs font-medium rounded-md capitalize transition-all ${
-                filters.gender === genderOption
-                  ? 'bg-white text-gray-900 shadow-xs font-semibold'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              {genderOption === 'all' ? 'All' : genderOption === 'female' ? 'Brides' : 'Grooms'}
-            </button>
-          ))}
+          <button
+            id="filter-gender-all"
+            data-testid="filter-gender-all"
+            type="button"
+            value="all"
+            onClick={() => handleGenderChange('all')}
+            className={`py-1.5 px-2 text-xs font-medium rounded-md capitalize transition-all ${
+              filters.gender === 'all'
+                ? 'bg-white text-gray-900 shadow-xs font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            All
+          </button>
+          <button
+            id="filter-gender-female"
+            data-testid="filter-gender-female"
+            type="button"
+            value="female"
+            onClick={() => handleGenderChange('female')}
+            className={`py-1.5 px-2 text-xs font-medium rounded-md capitalize transition-all ${
+              filters.gender === 'female'
+                ? 'bg-white text-gray-900 shadow-xs font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Brides
+          </button>
+          <button
+            id="filter-gender-male"
+            data-testid="filter-gender-male"
+            type="button"
+            value="male"
+            onClick={() => handleGenderChange('male')}
+            className={`py-1.5 px-2 text-xs font-medium rounded-md capitalize transition-all ${
+              filters.gender === 'male'
+                ? 'bg-white text-gray-900 shadow-xs font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Grooms
+          </button>
         </div>
       </div>
 
